@@ -10,6 +10,7 @@ namespace Core.Entities
         private Sprite _sprite;
 
         public Vector2 velocity;
+        public Rectangle wall;
 
         public Transform Transform => _transform;
         public Sprite Sprite => _sprite;
@@ -41,9 +42,9 @@ namespace Core.Entities
                 Vector2 dist = balls[i].Transform.position - Transform.position;
                 float distLength = dist.Length();
                 float radiusSum = Radius + balls[i].Radius;
-                
+
                 //Balls Are Overlaping
-                if(distLength < radiusSum)
+                if (distLength < radiusSum)
                 {
                     float overlap = radiusSum - distLength;
                     Transform.position -= Vector2.Normalize(dist) * overlap;
@@ -51,30 +52,32 @@ namespace Core.Entities
 
                     //Swap Velocity
                     Vector2 temp = velocity;
-                    velocity.X = balls[i].velocity.X;
-                    velocity.Y = balls[i].velocity.Y;
-                    balls[i].velocity.X = temp.X;
-                    balls[i].velocity.Y = temp.Y;
+                    velocity = balls[i].velocity;
+                    balls[i].velocity = temp;
                 }
             }
         }
 
         private void CheckWallCollision()
         {
-            if(_transform.position.X + Radius > Screen.Width)
+            if (_transform.position.X > wall.X + wall.Width - Radius)
             {
+                _transform.position.X = wall.X + wall.Width - Radius;
                 velocity.X *= -1f;
             }
-            else if(_transform.position.X - Radius < 0f)
+            else if (_transform.position.X < wall.X + Radius)
             {
+                _transform.position.X = wall.X + Radius;
                 velocity.X *= -1f;
             }
-            if(_transform.position.Y + Radius > Screen.Height)
+            if (_transform.position.Y > wall.Y + wall.Height - Radius)
             {
+                _transform.position.Y = wall.Y + wall.Height - Radius;
                 velocity.Y *= -1f;
             }
-            if(Transform.position.Y - Radius < 0f)
+            if (Transform.position.Y < wall.Y + Radius)
             {
+                _transform.position.Y = wall.Y + Radius;
                 velocity.Y *= -1f;
             }
         }

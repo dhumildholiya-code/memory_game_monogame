@@ -29,7 +29,7 @@ namespace Core
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _world = new World(Content, _spriteBatch);
+            _world = new World(Content, _spriteBatch, GraphicsDevice);
 
             _world.LoadContent();
         }
