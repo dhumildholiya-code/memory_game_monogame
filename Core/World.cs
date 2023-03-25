@@ -2,38 +2,37 @@
 using Core.Entities;
 using Core.EntityFactory;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading.Tasks;
 
 namespace Core
 {
+    public class WorldData
+    {
+        public Texture2D PointTex;
+        public Texture2D BallTex;
+
+        public WorldData(Texture2D pointTex, Texture2D ballTex)
+        {
+            PointTex = pointTex;
+            BallTex = ballTex;
+        }
+    }
     public class World
     {
-        private SpriteBatch _spriteBatch;
-        private ContentManager _content;
-        private GraphicsDevice _graphics;
-        #region Textures
-        private Texture2D _ballTex;
-        private Texture2D _pointTex;
-        #endregion
-
+        private WorldData _data;
         private Rectangle _wall;
+        private SequenceGenerator _sequenceGenerator;
         private Ball[] _balls;
 
-        public World(ContentManager content, SpriteBatch spriteBatch, GraphicsDevice graphics)
+        public World(WorldData data)
         {
-            _content = content;
-            _spriteBatch = spriteBatch;
-            _graphics = graphics;
+            _data = data;
         }
 
-        public void LoadContent()
+        public void Initialize()
         {
-            _ballTex = _content.Load<Texture2D>("ball");
-            _pointTex = new Texture2D(_graphics, 1, 1);
-            _pointTex.SetData(new[] { Color.White });
-
             _wall = new Rectangle(30, 30, 300, Screen.Height - 60);
             _balls = new Ball[4];
 
@@ -44,17 +43,20 @@ namespace Core
                 int dirX = rand.NextDouble() < .5 ? -1 : 1;
                 int dirY = rand.NextDouble() < .5 ? -1 : 1;
 
-                _balls[i] = BallFactory.CreateBall(_ballTex, randPosition, null);
+                _balls[i] = BallFactory.CreateBall(_data.BallTex, randPosition, GameManager.colors[i]);
                 _balls[i].wall = _wall;
                 _balls[i].velocity = new Vector2(rand.Next(2, 4) * dirX, rand.Next(2, 4) * dirY);
             }
+
+            int[] sequence = _sequenceGenerator.CreateSequence(4, GameManager.BallNumber);
+            PlaySequence(sequence);
         }
-        public void Draw(GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            _spriteBatch.Draw(_pointTex, _wall, Color.Gray);
+            spriteBatch.Draw(_data.PointTex, _wall, Color.Gray);
             for (int i = 0; i < _balls.Length; i++)
             {
-                _balls[i].Draw(_spriteBatch);
+                _balls[i].Draw(spriteBatch);
             }
         }
         public void Update(GameTime gameTime)
@@ -63,6 +65,14 @@ namespace Core
             {
                 _balls[i].Update(gameTime);
                 _balls[i].CheckCollisionWithOtherBalls(_balls);
+            }
+        }
+
+        private async Task PlaySequence(int[] sequence)
+        {
+            for (int i = 0; i < sequence.Length; i++)
+            {
+                _balls[sequence[i]].Pulse();
             }
         }
     }

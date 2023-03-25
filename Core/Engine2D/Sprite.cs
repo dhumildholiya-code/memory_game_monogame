@@ -12,6 +12,11 @@ namespace Core.Engine2D
         public float HalfWidth => _texture.Width / 2f;
         public float HalfHeight => _texture.Height / 2f;
         public float LayerDepth { get; set; }
+        public Color Color
+        {
+            get => _color;
+            set => _color = value;
+        }
 
         public Vector2 Origin => new Vector2(_texture.Width / 2f, _texture.Height / 2);
 

@@ -1,6 +1,8 @@
 ﻿using Core.Engine2D;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Threading.Tasks;
 
 namespace Core.Entities
 {
@@ -80,6 +82,18 @@ namespace Core.Entities
                 _transform.position.Y = wall.Y + Radius;
                 velocity.Y *= -1f;
             }
+        }
+
+        public async Task Pulse(Color pulseColor, float pulseTime, GameTime gameTime)
+        {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float t = 0f;
+            while (t < pulseTime)
+            {
+                t += deltaTime;
+                await Task.Yield();
+            }
+            t = pulseTime;
         }
     }
 }
