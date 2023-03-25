@@ -22,6 +22,9 @@ namespace Core
         public Texture2D BallTex { get; private set; }
         #endregion
 
+        private int _score;
+        public int Score => _score;
+
         public const int BallNumber = 4;
         public static Color[] colors = new Color[BallNumber] {
             new Color(new Vector3(163f, 37f, 18f)/ 255f), // red
@@ -32,6 +35,7 @@ namespace Core
 
         public GameManager()
         {
+            _score = 0;
             ChangeState(GetMainMenuState());
         }
 
@@ -62,6 +66,10 @@ namespace Core
         public void Update(GameTime gameTime)
         {
             _currentState.Update(gameTime);
+        }
+        public void AddScore(int score)
+        {
+            _score += score;
         }
 
         #region State Factory

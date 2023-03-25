@@ -67,6 +67,19 @@ namespace Core
             {
                 _balls[i].Draw(spriteBatch);
             }
+            Vector2 pos = new Vector2(330 + (Screen.Width - 330) / 2, Screen.Height * .3f);
+            Text.Draw(_ctx.Font, spriteBatch, $"Score : {_ctx.Score}", pos + new Vector2(0, -50), Color.Green);
+            Text.Draw(_ctx.Font, spriteBatch, "Backspace to Quit", pos, Color.White);
+            pos += new Vector2(0, 30);
+            Text.Draw(_ctx.Font, spriteBatch, "Space to Next Sequence", pos, Color.White);
+            pos += new Vector2(0, 50);
+            Text.Draw(_ctx.Font, spriteBatch, "Up -> RED", pos, Color.White);
+            pos += new Vector2(0, 30);
+            Text.Draw(_ctx.Font, spriteBatch, "Down -> GREEN", pos, Color.White);
+            pos += new Vector2(0, 30);
+            Text.Draw(_ctx.Font, spriteBatch, "Righ -> BLUE", pos, Color.White);
+            pos += new Vector2(0, 30);
+            Text.Draw(_ctx.Font, spriteBatch, "Left -> YELLOW", pos, Color.White);
             string info = string.Empty;
             Color color = Color.White;
             switch (_state)
@@ -90,7 +103,7 @@ namespace Core
                 default:
                     break;
             }
-            Text.Draw(_ctx.Font, spriteBatch, info, new Vector2( 180, 70 * .7f), color);
+            Text.Draw(_ctx.Font, spriteBatch, info, new Vector2(180, 70 * .7f), color);
         }
         public void Update(GameTime gameTime)
         {
@@ -98,6 +111,11 @@ namespace Core
             {
                 _balls[i].Update(gameTime);
                 _balls[i].CheckCollisionWithOtherBalls(_balls);
+            }
+
+            if (Input.IsKeyDown(Keys.Back))
+            {
+                _ctx.ChangeState(_ctx.GetMainMenuState());
             }
 
             switch (_state)
@@ -111,11 +129,17 @@ namespace Core
                     _sequenceGenerator.Update(_balls, gameTime);
                     break;
                 case WorldState.Input:
+                    if (Input.IsKeyDown(Keys.Space))
+                    {
+                        _ctx.AddScore(-40);
+                        _state = WorldState.GenerateSequence;
+                    }
                     if (Input.IsKeyDown(Keys.Right))
                     {
                         _balls[2].Pulse(Color.White, .2f);
                         if (!_sequenceGenerator.CheckSequenceElement(_inputSequenceIndex, 2))
                         {
+                            _ctx.AddScore(-30);
                             _state = WorldState.Wrong;
                             break;
                         }
@@ -126,6 +150,7 @@ namespace Core
                         _balls[3].Pulse(Color.White, .2f);
                         if (!_sequenceGenerator.CheckSequenceElement(_inputSequenceIndex, 3))
                         {
+                            _ctx.AddScore(-30);
                             _state = WorldState.Wrong;
                             break;
                         }
@@ -136,6 +161,7 @@ namespace Core
                         _balls[0].Pulse(Color.White, .2f);
                         if (!_sequenceGenerator.CheckSequenceElement(_inputSequenceIndex, 0))
                         {
+                            _ctx.AddScore(-30);
                             _state = WorldState.Wrong;
                             break;
                         }
@@ -146,6 +172,7 @@ namespace Core
                         _balls[1].Pulse(Color.White, .2f);
                         if (!_sequenceGenerator.CheckSequenceElement(_inputSequenceIndex, 1))
                         {
+                            _ctx.AddScore(-30);
                             _state = WorldState.Wrong;
                             break;
                         }
@@ -153,7 +180,9 @@ namespace Core
                     }
                     if (_inputSequenceIndex == _sequenceGenerator.Length)
                     {
+                        _ctx.AddScore(100);
                         _state = WorldState.Correct;
+                        break;
                     }
                     break;
                 case WorldState.Correct:

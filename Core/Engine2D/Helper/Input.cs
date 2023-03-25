@@ -21,6 +21,7 @@ namespace Core.Engine2D.Helper
                 {Keys.Right, new GameKey(Keys.Right) },
                 {Keys.Up, new GameKey(Keys.Up) },
                 {Keys.Down, new GameKey(Keys.Down) },
+                {Keys.Back, new GameKey(Keys.Back) },
             };
         }
 
