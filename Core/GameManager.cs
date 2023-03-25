@@ -24,10 +24,10 @@ namespace Core
 
         public const int BallNumber = 4;
         public static Color[] colors = new Color[BallNumber] {
-            new Color(new Vector3(163f, 37f, 18f)/ 255f),
-            new Color(new Vector3(49f, 163f, 18f)/ 255f),
-            new Color(new Vector3(18f, 98f, 163f)/ 255f),
-            new Color(new Vector3(163f, 158f, 18f)/ 255f),
+            new Color(new Vector3(163f, 37f, 18f)/ 255f), // red
+            new Color(new Vector3(49f, 163f, 18f)/ 255f), // green
+            new Color(new Vector3(18f, 98f, 163f)/ 255f),  // blue
+            new Color(new Vector3(163f, 158f, 18f)/ 255f),  // yellow
         };
 
         public GameManager()

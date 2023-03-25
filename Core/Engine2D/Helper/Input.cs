@@ -16,7 +16,11 @@ namespace Core.Engine2D.Helper
             _prevKeyboardState = Keyboard.GetState();
             _gameKeys = new Dictionary<Keys, GameKey>
             {
-                { Keys.Space, new GameKey(Keys.Space) }
+                { Keys.Space, new GameKey(Keys.Space) },
+                {Keys.Left, new GameKey(Keys.Left) },
+                {Keys.Right, new GameKey(Keys.Right) },
+                {Keys.Up, new GameKey(Keys.Up) },
+                {Keys.Down, new GameKey(Keys.Down) },
             };
         }
 

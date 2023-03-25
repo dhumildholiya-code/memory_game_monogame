@@ -19,8 +19,7 @@ namespace Core.Engine2D.StateMachine
 
         public override void Enter()
         {
-            WorldData data = new WorldData(Ctx.PointTex, Ctx.BallTex);
-            _world = new World(data);
+            _world = new World(Ctx);
             _world.Initialize();
         }
 
@@ -35,10 +34,10 @@ namespace Core.Engine2D.StateMachine
         }
         protected override void CheckChangeState()
         {
-            if (Input.IsKeyDown(Keys.Space))
-            {
-                Ctx.ChangeState(Ctx.GetMainMenuState());
-            }
+            //if (Input.IsKeyDown(Keys.Space))
+            //{
+            //    _ctx.ChangeState(_ctx.GetMainMenuState());
+            //}
         }
     }
 }

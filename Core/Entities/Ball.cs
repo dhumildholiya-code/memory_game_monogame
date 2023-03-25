@@ -1,8 +1,8 @@
 ﻿using Core.Engine2D;
+using Core.Engine2D.Helper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Threading.Tasks;
 
 namespace Core.Entities
 {
@@ -19,6 +19,10 @@ namespace Core.Entities
 
         public float Radius => _sprite.HalfWidth * _transform.scale.X;
 
+        private Color _originalColor;
+        private bool _isPulsing;
+        private float _timer;
+
         public Ball(Transform transform, Sprite sprite)
         {
             _transform = transform;
@@ -32,8 +36,20 @@ namespace Core.Entities
         }
         public void Update(GameTime gameTime)
         {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _transform.position += velocity;
             CheckWallCollision();
+
+
+            if (_timer >= 0f && _isPulsing)
+            {
+                _timer -= deltaTime;
+                if (_timer <= 0f)
+                {
+                    _isPulsing = false;
+                    _sprite.Color = _originalColor;
+                }
+            }
         }
 
         public void CheckCollisionWithOtherBalls(Ball[] balls)
@@ -59,6 +75,13 @@ namespace Core.Entities
                 }
             }
         }
+        public void Pulse(Color pulseColor, float duration)
+        {
+            _isPulsing = true;
+            _originalColor = _sprite.Color;
+            _sprite.Color = pulseColor;
+            _timer = duration;
+        }
 
         private void CheckWallCollision()
         {
@@ -82,18 +105,6 @@ namespace Core.Entities
                 _transform.position.Y = wall.Y + Radius;
                 velocity.Y *= -1f;
             }
-        }
-
-        public async Task Pulse(Color pulseColor, float pulseTime, GameTime gameTime)
-        {
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float t = 0f;
-            while (t < pulseTime)
-            {
-                t += deltaTime;
-                await Task.Yield();
-            }
-            t = pulseTime;
         }
     }
 }
