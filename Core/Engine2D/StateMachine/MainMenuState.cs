@@ -1,12 +1,15 @@
 ﻿using Core.Engine2D.Helper;
+using Core.Engine2D.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Core.Engine2D.StateMachine
 {
     public class MainMenuState : GameState
     {
+        private TextButton _button;
         public MainMenuState(GameManager ctx) : base(ctx)
         {
         }
@@ -23,10 +26,12 @@ namespace Core.Engine2D.StateMachine
 
         public override void Enter()
         {
+            _button = UiManager.CreateButton(Ctx.PointTex, Color.White, Ctx.Font, new Vector2(Screen.Width / 2, Screen.Height / 2));
         }
 
         public override void Exit()
         {
+            UiManager.Remove(_button);
         }
 
         public override void Update(GameTime gameTime)

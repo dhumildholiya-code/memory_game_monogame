@@ -7,10 +7,15 @@ namespace Core.Engine2D
     {
         private Texture2D _texture;
         private Color _color;
-        private Transform _transform;
+        private Rectangle _rect;
 
         public float HalfWidth => _texture.Width / 2f;
         public float HalfHeight => _texture.Height / 2f;
+        public int Width => _texture.Width;
+        public int Height => _texture.Height;
+        public Vector2 TexOrigin => new Vector2(_texture.Width / 2f, _texture.Height / 2f);
+
+        public Rectangle Rectangle => _rect;
         public float LayerDepth { get; set; }
         public Color Color
         {
@@ -18,20 +23,18 @@ namespace Core.Engine2D
             set => _color = value;
         }
 
-        public Vector2 Origin => new Vector2(_texture.Width / 2f, _texture.Height / 2);
-
-        public Sprite(Texture2D texture, Transform transform, Color color)
+        public Sprite(Texture2D texture, Color color)
         {
             _texture = texture;
             _color = color;
-            _transform = transform;
             LayerDepth = 0;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Transform transform)
         {
-            spriteBatch.Draw(_texture, _transform.position, null, _color,
-                _transform.rotation, Origin, _transform.scale, SpriteEffects.None, LayerDepth);
+            _rect = new Rectangle((int)transform.position.X, (int)transform.position.Y, (int)(Width * transform.scale.X), (int)(Height * transform.scale.Y));
+            spriteBatch.Draw(_texture, _rect, null, _color,
+               transform.rotation, TexOrigin, SpriteEffects.None, LayerDepth);
         }
     }
 }

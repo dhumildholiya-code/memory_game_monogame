@@ -32,10 +32,6 @@ namespace Core.Engine2D.StateMachine
         }
         protected override void CheckChangeState()
         {
-            //if (Input.IsKeyDown(Keys.Space))
-            //{
-            //    _ctx.ChangeState(_ctx.GetMainMenuState());
-            //}
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Core.Entities
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _sprite.Draw(spriteBatch);
+            _sprite.Draw(spriteBatch, _transform);
         }
         public void Update(GameTime gameTime)
         {

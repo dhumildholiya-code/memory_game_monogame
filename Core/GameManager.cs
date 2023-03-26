@@ -1,4 +1,5 @@
 ﻿using Core.Engine2D.StateMachine;
+using Core.Engine2D.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,7 +37,6 @@ namespace Core
         public GameManager()
         {
             _score = 0;
-            ChangeState(GetMainMenuState());
         }
 
         public void LoadContent(ContentManager content, GraphicsDevice graphics)
@@ -47,6 +47,12 @@ namespace Core
             BallTex = content.Load<Texture2D>("ball");
             PointTex = new Texture2D(graphics, 1, 1);
             PointTex.SetData(new[] { Color.White });
+
+            Init();
+        }
+        public void Init()
+        {
+            ChangeState(GetMainMenuState());
         }
 
         public void ChangeState(GameState newState)
@@ -62,9 +68,11 @@ namespace Core
         public void Draw(SpriteBatch spriteBatch)
         {
             _currentState.Draw(spriteBatch);
+            UiManager.Draw(spriteBatch);
         }
         public void Update(GameTime gameTime)
         {
+            UiManager.Update(gameTime);
             _currentState.Update(gameTime);
         }
         public void AddScore(int score)
