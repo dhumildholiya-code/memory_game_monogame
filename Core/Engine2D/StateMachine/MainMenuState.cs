@@ -27,6 +27,7 @@ namespace Core.Engine2D.StateMachine
         public override void Enter()
         {
             _button = UiManager.CreateButton(Ctx.PointTex, Color.White, Ctx.Font, new Vector2(Screen.Width / 2, Screen.Height / 2));
+            //_button = UiManager.CreateButton(Ctx.PointTex, Color.White, Ctx.Font, Vector2.Zero);
         }
 
         public override void Exit()

@@ -13,7 +13,6 @@ namespace Core
         private SpriteBatch _spriteBatch;
 
         private RenderTarget2D _doubleBuffer;
-        private Rectangle _renderRectangle;
 
         private GameManager _gameManager;
 
@@ -71,7 +70,7 @@ namespace Core
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_doubleBuffer, _renderRectangle, Color.White);
+            _spriteBatch.Draw(_doubleBuffer, Screen.ScreenRect, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -90,7 +89,7 @@ namespace Core
             }
             var x = (Window.ClientBounds.Width - width) / 2;
             var y = (Window.ClientBounds.Height - height) / 2;
-            _renderRectangle = new Rectangle(x, y, width, height);
+            Screen.ScreenRect = new Rectangle(x, y, width, height);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Core.Engine2D
         public float HalfHeight => _texture.Height / 2f;
         public int Width => _texture.Width;
         public int Height => _texture.Height;
-        public Vector2 TexOrigin => new Vector2(_texture.Width / 2f, _texture.Height / 2f);
+        public Vector2 Origin { get; set; }
 
         public Rectangle Rectangle => _rect;
         public float LayerDepth { get; set; }
@@ -34,7 +34,7 @@ namespace Core.Engine2D
         {
             _rect = new Rectangle((int)transform.position.X, (int)transform.position.Y, (int)(Width * transform.scale.X), (int)(Height * transform.scale.Y));
             spriteBatch.Draw(_texture, _rect, null, _color,
-               transform.rotation, TexOrigin, SpriteEffects.None, LayerDepth);
+               transform.rotation, Origin, SpriteEffects.None, LayerDepth);
         }
     }
 }
