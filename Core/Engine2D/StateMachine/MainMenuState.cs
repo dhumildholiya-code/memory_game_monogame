@@ -17,21 +17,19 @@ namespace Core.Engine2D.StateMachine
         public override void Draw(SpriteBatch spriteBatch)
         {
             string title = "Memory Game";
-            string info = "Press Space to Continue";
             Vector2 pos = new Vector2(Screen.Width / 2, Screen.Height * .3f);
             Text.Draw(Ctx.TitleFont, spriteBatch, title, pos, Color.White);
-            pos = new Vector2(Screen.Width / 2, Screen.Height * .8f);
-            Text.Draw(Ctx.Font, spriteBatch, info, pos, Color.Green);
         }
 
         public override void Enter()
         {
-            _button = UiManager.CreateButton(Ctx.PointTex, Color.White, Ctx.Font, new Vector2(Screen.Width / 2, Screen.Height / 2));
-            //_button = UiManager.CreateButton(Ctx.PointTex, Color.White, Ctx.Font, Vector2.Zero);
+            _button = UiManager.CreateButton("Play", new Vector2(Screen.Width / 2, Screen.Height * .8f), Ctx.PointTex, Color.White, Ctx.Font);
+            _button.OnButtonClick += OnPlayButtonClick;
         }
 
         public override void Exit()
         {
+            _button.OnButtonClick -= OnPlayButtonClick;
             UiManager.Remove(_button);
         }
 
@@ -44,8 +42,12 @@ namespace Core.Engine2D.StateMachine
         {
             if (Input.IsKeyDown(Keys.Space))
             {
-                Ctx.ChangeState(Ctx.GetGameplayState());
             }
+        }
+
+        private void OnPlayButtonClick()
+        {
+            Ctx.ChangeState(Ctx.GetGameplayState());
         }
     }
 }

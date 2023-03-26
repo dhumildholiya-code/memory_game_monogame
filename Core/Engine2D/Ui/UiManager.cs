@@ -15,16 +15,18 @@ namespace Core.Engine2D.Ui
 
         public static void Update(GameTime gameTime)
         {
-            foreach (var button in _buttons)
+            for (int i = _buttons.Count - 1; i >= 0; i--)
             {
+                TextButton button = _buttons[i];
                 button.Update(gameTime);
             }
         }
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var button in _buttons)
+            for (int i = _buttons.Count - 1; i >= 0; i--)
             {
+                TextButton button = _buttons[i];
                 button.Draw(spriteBatch);
             }
         }
@@ -33,11 +35,11 @@ namespace Core.Engine2D.Ui
         {
             _buttons.Remove(button);
         }
-        public static TextButton CreateButton(Texture2D texture, Color color, SpriteFont font, Vector2 pos)
+        public static TextButton CreateButton(string text, Vector2 pos, Texture2D texture, Color color, SpriteFont font)
         {
             Sprite sprite = new Sprite(texture, color);
             Transform transform = new Transform(pos);
-            var button = new TextButton("Button", sprite, font, transform);
+            var button = new TextButton(text, sprite, font, transform);
             _buttons.Add(button);
             return button;
         }

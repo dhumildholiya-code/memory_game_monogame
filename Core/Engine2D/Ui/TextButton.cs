@@ -5,6 +5,18 @@ using System;
 
 namespace Core.Engine2D.Ui
 {
+    public enum Anchor
+    {
+        TopLeft,
+        TopCenter,
+        TopRight,
+        MiddleLeft,
+        MiddleCenter,
+        MiddleRight,
+        BottomLeft,
+        BottomCenter,
+        BottomRight,
+    }
     public class TextButton
     {
         public event Action OnButtonClick;
@@ -29,12 +41,12 @@ namespace Core.Engine2D.Ui
             _text = text;
 
             Vector2 size = font.MeasureString(text);
-            _sprite.Origin = Vector2.Zero;
             _transform.scale = size + new Vector2(50, 10);
 
             _normalColor = _sprite.Color;
             _hoverColor = Color.Gray;
             _pressedColor = Color.Green;
+
         }
 
         public void Update(GameTime gameTime)
@@ -62,7 +74,7 @@ namespace Core.Engine2D.Ui
         public void Draw(SpriteBatch spriteBatch)
         {
             _sprite.Draw(spriteBatch, _transform);
-            Text.Draw(_font, spriteBatch, _text, _transform.position + new Vector2(_transform.scale.X / 2, _transform.scale.Y / 2), Color.Black);
+            Text.Draw(_font, spriteBatch, _text, _transform.position, Color.Black);
         }
     }
 }
