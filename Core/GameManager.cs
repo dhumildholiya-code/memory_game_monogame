@@ -33,6 +33,13 @@ namespace Core
             new Color(new Vector3(18f, 98f, 163f)/ 255f),  // blue
             new Color(new Vector3(163f, 158f, 18f)/ 255f),  // yellow
         };
+        public static string[] ballNames = new string[BallNumber]
+        {
+            "Red",
+            "Green",
+            "Blue",
+            "Yellow",
+        };
 
         public GameManager()
         {

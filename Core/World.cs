@@ -1,5 +1,6 @@
 ﻿using Core.Engine2D;
 using Core.Engine2D.Helper;
+using Core.Engine2D.Ui;
 using Core.Entities;
 using Core.EntityFactory;
 using Microsoft.Xna.Framework;
@@ -23,6 +24,7 @@ namespace Core
         private Rectangle _wall;
         private SequenceGenerator _sequenceGenerator;
         private Ball[] _balls;
+        private TextButton[] _ballButtons;
 
         private WorldState _state;
 
@@ -40,8 +42,10 @@ namespace Core
             _sequenceGenerator.OnPlaySequenceComplete += SequencePlayingComplete;
             _wall = new Rectangle(30, 70, 300, Screen.Height - 100);
             _balls = new Ball[4];
+            _ballButtons = new TextButton[4];
 
             Random rand = new Random();
+            Vector2 buttonPos = new Vector2(330 + (Screen.Width - 330) / 2, Screen.Height * .3f + 80);
             for (int i = 0; i < _balls.Length; i++)
             {
                 Vector2 randPosition = new Vector2(rand.Next(_wall.X, _wall.X + _wall.Width), rand.Next(_wall.Y, _wall.Y + _wall.Height));
@@ -51,6 +55,11 @@ namespace Core
                 _balls[i] = BallFactory.CreateBall(_ctx.BallTex, randPosition, GameManager.colors[i]);
                 _balls[i].wall = _wall;
                 _balls[i].velocity = new Vector2(rand.Next(2, 4) * dirX, rand.Next(2, 4) * dirY);
+
+                _ballButtons[i] = UiManager.CreateButton(GameManager.ballNames[i], buttonPos, _ctx.PointTex, GameManager.colors[i], _ctx.Font);
+                int index = i;
+                _ballButtons[i].OnButtonClick += () => { ClickBallButton(index); };
+                buttonPos += new Vector2(0, 40);
             }
         }
 
@@ -58,6 +67,19 @@ namespace Core
         {
             _state = WorldState.Input;
             _inputSequenceIndex = 0;
+        }
+
+        private void ClickBallButton(int index)
+        {
+            if (_state != WorldState.Input) return;
+            _balls[index].Pulse(Color.White, .2f);
+            if (!_sequenceGenerator.CheckSequenceElement(_inputSequenceIndex, index))
+            {
+                _ctx.AddScore(-30);
+                _state = WorldState.Wrong;
+                return;
+            }
+            _inputSequenceIndex++;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -72,14 +94,6 @@ namespace Core
             Text.Draw(_ctx.Font, spriteBatch, "Backspace to Quit", pos, Color.White);
             pos += new Vector2(0, 30);
             Text.Draw(_ctx.Font, spriteBatch, "Space to Next Sequence", pos, Color.White);
-            pos += new Vector2(0, 50);
-            Text.Draw(_ctx.Font, spriteBatch, "Up -> RED", pos, Color.White);
-            pos += new Vector2(0, 30);
-            Text.Draw(_ctx.Font, spriteBatch, "Down -> GREEN", pos, Color.White);
-            pos += new Vector2(0, 30);
-            Text.Draw(_ctx.Font, spriteBatch, "Right -> BLUE", pos, Color.White);
-            pos += new Vector2(0, 30);
-            Text.Draw(_ctx.Font, spriteBatch, "Left -> YELLOW", pos, Color.White);
             string info = string.Empty;
             Color color = Color.White;
             switch (_state)

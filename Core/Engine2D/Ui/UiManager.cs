@@ -17,8 +17,10 @@ namespace Core.Engine2D.Ui
         {
             for (int i = _buttons.Count - 1; i >= 0; i--)
             {
-                TextButton button = _buttons[i];
-                button.Update(gameTime);
+                if (_buttons[i].isActive)
+                {
+                    _buttons[i].Update(gameTime);
+                }
             }
         }
 
@@ -26,8 +28,10 @@ namespace Core.Engine2D.Ui
         {
             for (int i = _buttons.Count - 1; i >= 0; i--)
             {
-                TextButton button = _buttons[i];
-                button.Draw(spriteBatch);
+                if (_buttons[i].isActive)
+                {
+                    _buttons[i].Draw(spriteBatch);
+                }
             }
         }
 

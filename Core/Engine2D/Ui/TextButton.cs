@@ -5,21 +5,11 @@ using System;
 
 namespace Core.Engine2D.Ui
 {
-    public enum Anchor
-    {
-        TopLeft,
-        TopCenter,
-        TopRight,
-        MiddleLeft,
-        MiddleCenter,
-        MiddleRight,
-        BottomLeft,
-        BottomCenter,
-        BottomRight,
-    }
     public class TextButton
     {
         public event Action OnButtonClick;
+
+        public bool isActive;
 
         private Sprite _sprite;
         private SpriteFont _font;
@@ -35,6 +25,7 @@ namespace Core.Engine2D.Ui
 
         public TextButton(string text, Sprite sprite, SpriteFont font, Transform transform)
         {
+            isActive = true;
             _sprite = sprite;
             _transform = transform;
             _font = font;
@@ -51,6 +42,7 @@ namespace Core.Engine2D.Ui
 
         public void Update(GameTime gameTime)
         {
+            if (!isActive) return;
             var mousePos = Input.GetMousePosition();
             Rectangle mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
             if (mouseRect.Intersects(_sprite.Rectangle))
@@ -73,6 +65,7 @@ namespace Core.Engine2D.Ui
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (!isActive) return;
             _sprite.Draw(spriteBatch, _transform);
             Text.Draw(_font, spriteBatch, _text, _transform.position, Color.Black);
         }
