@@ -77,7 +77,7 @@ namespace Core
             pos += new Vector2(0, 30);
             Text.Draw(_ctx.Font, spriteBatch, "Down -> GREEN", pos, Color.White);
             pos += new Vector2(0, 30);
-            Text.Draw(_ctx.Font, spriteBatch, "Righ -> BLUE", pos, Color.White);
+            Text.Draw(_ctx.Font, spriteBatch, "Right -> BLUE", pos, Color.White);
             pos += new Vector2(0, 30);
             Text.Draw(_ctx.Font, spriteBatch, "Left -> YELLOW", pos, Color.White);
             string info = string.Empty;
